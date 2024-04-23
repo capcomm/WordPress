@@ -70,8 +70,8 @@ add_action( 'admin_print_styles-appearance_page_custom-header', 'twentytwelve_cu
 function twentytwelve_header_style() {
 	$text_color = get_header_textcolor();
 
-	// If no custom options for text are set, let's bail
-	if ( $text_color == get_theme_support( 'custom-header', 'default-text-color' ) ) {
+	// If no custom options for text are set, let's bail.
+	if ( get_theme_support( 'custom-header', 'default-text-color' ) === $text_color ) {
 		return;
 	}
 
@@ -81,17 +81,17 @@ function twentytwelve_header_style() {
 	<?php
 		// Has the text been hidden?
 	if ( ! display_header_text() ) :
-	?>
+		?>
 	.site-title,
 	.site-description {
 		position: absolute;
 		clip: rect(1px 1px 1px 1px); /* IE7 */
 		clip: rect(1px, 1px, 1px, 1px);
 	}
-	<?php
-	// If the user has set a custom color for the text, use that.
+		<?php
+		// If the user has set a custom color for the text, use that.
 		else :
-	?>
+			?>
 		.site-header h1 a,
 		.site-header h2 {
 			color: #<?php echo $text_color; ?>;
@@ -107,7 +107,7 @@ function twentytwelve_header_style() {
  * @since Twenty Twelve 1.0
  */
 function twentytwelve_admin_header_style() {
-?>
+	?>
 	<style type="text/css" id="twentytwelve-admin-header-css">
 	.appearance_page_custom-header #headimg {
 		border: none;
@@ -138,7 +138,7 @@ function twentytwelve_admin_header_style() {
 		max-width: <?php echo get_theme_support( 'custom-header', 'max-width' ); ?>px;
 	}
 	</style>
-<?php
+	<?php
 }
 
 /**
@@ -160,9 +160,33 @@ function twentytwelve_admin_header_image() {
 		<?php
 		$header_image = get_header_image();
 		if ( ! empty( $header_image ) ) :
-		?>
+			?>
 			<img src="<?php echo esc_url( $header_image ); ?>" class="header-image" width="<?php echo esc_attr( get_custom_header()->width ); ?>" height="<?php echo esc_attr( get_custom_header()->height ); ?>" alt="" />
 		<?php endif; ?>
 	</div>
-<?php
+	<?php
+}
+
+
+/**
+ * Output markup to be displayed.
+ *
+ * @since Twenty Twelve 4.1
+ */
+function twentytwelve_header_image() {
+	$custom_header = get_custom_header();
+	$attrs         = array(
+		'alt'    => get_bloginfo( 'name', 'display' ),
+		'class'  => 'header-image',
+		'height' => $custom_header->height,
+		'width'  => $custom_header->width,
+	);
+
+	if ( function_exists( 'the_header_image_tag' ) ) {
+		the_header_image_tag( $attrs );
+		return;
+	}
+	?>
+	<img src="<?php header_image(); ?>" class="<?php echo esc_attr( $attrs['class'] ); ?>" width="<?php echo esc_attr( $attrs['width'] ); ?>" height="<?php echo esc_attr( $attrs['height'] ); ?>" alt="<?php echo esc_attr( $attrs['alt'] ); ?>" />
+	<?php
 }

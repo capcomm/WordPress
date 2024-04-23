@@ -23,14 +23,14 @@
 			else :
 				the_title( sprintf( '<h2 class="entry-title"><a href="%s" rel="bookmark">', esc_url( get_permalink() ) ), '</a></h2>' );
 			endif;
-		?>
+			?>
 	</header><!-- .entry-header -->
 
 	<div class="entry-content">
 		<?php
-			/* translators: %s: Name of current post */
 			the_content(
 				sprintf(
+					/* translators: %s: Post title. Only visible to screen readers. */
 					__( 'Continue reading %s', 'twentyfifteen' ),
 					the_title( '<span class="screen-reader-text">', '</span>', false )
 				)
@@ -42,15 +42,16 @@
 					'after'       => '</div>',
 					'link_before' => '<span>',
 					'link_after'  => '</span>',
+					/* translators: Hidden accessibility text. */
 					'pagelink'    => '<span class="screen-reader-text">' . __( 'Page', 'twentyfifteen' ) . ' </span>%',
 					'separator'   => '<span class="screen-reader-text">, </span>',
 				)
 			);
-		?>
+			?>
 	</div><!-- .entry-content -->
 
 	<?php
-		// Author bio.
+	// Author bio.
 	if ( is_single() && get_the_author_meta( 'description' ) ) :
 		get_template_part( 'author-bio' );
 		endif;
@@ -61,4 +62,4 @@
 		<?php edit_post_link( __( 'Edit', 'twentyfifteen' ), '<span class="edit-link">', '</span>' ); ?>
 	</footer><!-- .entry-footer -->
 
-</article><!-- #post-## -->
+</article><!-- #post-<?php the_ID(); ?> -->

@@ -4,7 +4,7 @@
  *
  * Handles displaying Aside, Link, Status, and Quote Posts available with Twenty Eleven.
  *
- * @link https://codex.wordpress.org/Widgets_API#Developing_Widgets
+ * @link https://developer.wordpress.org/themes/functionality/widgets/#developing-widgets
  *
  * @package WordPress
  * @subpackage Twenty_Eleven
@@ -17,9 +17,11 @@ class Twenty_Eleven_Ephemera_Widget extends WP_Widget {
 	 *
 	 * @since Twenty Eleven 2.2
 	 */
-	function __construct() {
+	public function __construct() {
 		parent::__construct(
-			'widget_twentyeleven_ephemera', __( 'Twenty Eleven Ephemera', 'twentyeleven' ), array(
+			'widget_twentyeleven_ephemera',
+			__( 'Twenty Eleven Ephemera', 'twentyeleven' ),
+			array(
 				'classname'                   => 'widget_twentyeleven_ephemera',
 				'description'                 => __( 'Use this widget to list your recent Aside, Status, Quote, and Link posts', 'twentyeleven' ),
 				'customize_selective_refresh' => true,
@@ -36,8 +38,9 @@ class Twenty_Eleven_Ephemera_Widget extends WP_Widget {
 	 * PHP4 constructor.
 	 *
 	 * @since Twenty Eleven 1.0
+	 * @deprecated Twenty Eleven 2.2
 	 */
-	function Twenty_Eleven_Ephemera_Widget() {
+	public function Twenty_Eleven_Ephemera_Widget() {
 		self::__construct();
 	}
 
@@ -49,7 +52,7 @@ class Twenty_Eleven_Ephemera_Widget extends WP_Widget {
 	 * @param array $args     An array of standard parameters for widgets in this theme.
 	 * @param array $instance An array of settings for this widget instance.
 	 */
-	function widget( $args, $instance ) {
+	public function widget( $args, $instance ) {
 		$cache = wp_cache_get( 'widget_twentyeleven_ephemera', 'widget' );
 
 		if ( ! is_array( $cache ) ) {
@@ -66,7 +69,6 @@ class Twenty_Eleven_Ephemera_Widget extends WP_Widget {
 		}
 
 		ob_start();
-		extract( $args, EXTR_SKIP );
 
 		/** This filter is documented in wp-includes/default-widgets.php */
 		$args['title'] = apply_filters( 'widget_title', empty( $instance['title'] ) ? __( 'Ephemera', 'twentyeleven' ) : $instance['title'], $instance, $this->id_base );
@@ -75,7 +77,8 @@ class Twenty_Eleven_Ephemera_Widget extends WP_Widget {
 			$instance['number'] = '10';
 		}
 
-		if ( ! $args['number'] = absint( $instance['number'] ) ) {
+		$args['number'] = absint( $instance['number'] );
+		if ( ! $args['number'] ) {
 			$args['number'] = 10;
 		}
 
@@ -106,9 +109,9 @@ class Twenty_Eleven_Ephemera_Widget extends WP_Widget {
 			<?php
 			while ( $ephemera->have_posts() ) :
 				$ephemera->the_post();
-?>
+				?>
 
-				<?php if ( 'link' != get_post_format() ) : ?>
+				<?php if ( 'link' !== get_post_format() ) : ?>
 
 				<li class="widget-entry-title">
 					<a href="<?php echo esc_url( get_permalink() ); ?>" rel="bookmark"><?php the_title(); ?></a>
@@ -134,17 +137,16 @@ class Twenty_Eleven_Ephemera_Widget extends WP_Widget {
 
 			echo $args['after_widget'];
 
-			// Reset the post globals as this query will have stomped on it
+			// Reset the post globals as this query will have stomped on it.
 			wp_reset_postdata();
 
-			// end check for ephemeral posts
+			// End check for ephemeral posts.
 		endif;
 
 		$cache[ $args['widget_id'] ] = ob_get_flush();
 		if ( ! is_customize_preview() ) {
 			wp_cache_set( 'widget_twentyeleven_ephemera', $cache, 'widget' );
 		}
-
 	}
 
 	/**
@@ -155,7 +157,7 @@ class Twenty_Eleven_Ephemera_Widget extends WP_Widget {
 	 *
 	 * @since Twenty Eleven 1.0
 	 */
-	function update( $new_instance, $old_instance ) {
+	public function update( $new_instance, $old_instance ) {
 		$instance           = $old_instance;
 		$instance['title']  = strip_tags( $new_instance['title'] );
 		$instance['number'] = (int) $new_instance['number'];
@@ -174,7 +176,7 @@ class Twenty_Eleven_Ephemera_Widget extends WP_Widget {
 	 *
 	 * @since Twenty Eleven 1.0
 	 */
-	function flush_widget_cache() {
+	public function flush_widget_cache() {
 		wp_cache_delete( 'widget_twentyeleven_ephemera', 'widget' );
 	}
 
@@ -185,10 +187,10 @@ class Twenty_Eleven_Ephemera_Widget extends WP_Widget {
 	 *
 	 * @since Twenty Eleven 1.0
 	 */
-	function form( $instance ) {
+	public function form( $instance ) {
 		$title  = isset( $instance['title'] ) ? esc_attr( $instance['title'] ) : '';
 		$number = isset( $instance['number'] ) ? absint( $instance['number'] ) : 10;
-?>
+		?>
 			<p><label for="<?php echo esc_attr( $this->get_field_id( 'title' ) ); ?>"><?php _e( 'Title:', 'twentyeleven' ); ?></label>
 			<input class="widefat" id="<?php echo esc_attr( $this->get_field_id( 'title' ) ); ?>" name="<?php echo esc_attr( $this->get_field_name( 'title' ) ); ?>" type="text" value="<?php echo esc_attr( $title ); ?>" /></p>
 

@@ -26,11 +26,11 @@ if ( post_password_required() ) {
 		<?php
 			$comments_number = get_comments_number();
 		if ( '1' === $comments_number ) {
-			/* translators: %s: post title */
+			/* translators: %s: Post title. */
 			printf( _x( 'One thought on &ldquo;%s&rdquo;', 'comments title', 'twentyfourteen' ), get_the_title() );
 		} else {
 			printf(
-				/* translators: 1: number of comments, 2: post title */
+				/* translators: 1: Number of comments, 2: Post title. */
 				_nx(
 					'%1$s thought on &ldquo;%2$s&rdquo;',
 					'%1$s thoughts on &ldquo;%2$s&rdquo;',
@@ -45,9 +45,14 @@ if ( post_password_required() ) {
 		?>
 	</h2>
 
-	<?php if ( get_comment_pages_count() > 1 && get_option( 'page_comments' ) ) : ?>
-	<nav id="comment-nav-above" class="navigation comment-navigation" role="navigation">
-		<h1 class="screen-reader-text"><?php _e( 'Comment navigation', 'twentyfourteen' ); ?></h1>
+		<?php if ( get_comment_pages_count() > 1 && get_option( 'page_comments' ) ) : ?>
+	<nav id="comment-nav-above" class="navigation comment-navigation">
+		<h1 class="screen-reader-text">
+			<?php
+			/* translators: Hidden accessibility text. */
+			_e( 'Comment navigation', 'twentyfourteen' );
+			?>
+		</h1>
 		<div class="nav-previous"><?php previous_comments_link( __( '&larr; Older Comments', 'twentyfourteen' ) ); ?></div>
 		<div class="nav-next"><?php next_comments_link( __( 'Newer Comments &rarr;', 'twentyfourteen' ) ); ?></div>
 	</nav><!-- #comment-nav-above -->
@@ -65,15 +70,20 @@ if ( post_password_required() ) {
 		?>
 	</ol><!-- .comment-list -->
 
-	<?php if ( get_comment_pages_count() > 1 && get_option( 'page_comments' ) ) : ?>
-	<nav id="comment-nav-below" class="navigation comment-navigation" role="navigation">
-		<h1 class="screen-reader-text"><?php _e( 'Comment navigation', 'twentyfourteen' ); ?></h1>
+		<?php if ( get_comment_pages_count() > 1 && get_option( 'page_comments' ) ) : ?>
+	<nav id="comment-nav-below" class="navigation comment-navigation">
+		<h1 class="screen-reader-text">
+			<?php
+			/* translators: Hidden accessibility text. */
+			_e( 'Comment navigation', 'twentyfourteen' );
+			?>
+		</h1>
 		<div class="nav-previous"><?php previous_comments_link( __( '&larr; Older Comments', 'twentyfourteen' ) ); ?></div>
 		<div class="nav-next"><?php next_comments_link( __( 'Newer Comments &rarr;', 'twentyfourteen' ) ); ?></div>
 	</nav><!-- #comment-nav-below -->
 	<?php endif; // Check for comment navigation. ?>
 
-	<?php if ( ! comments_open() ) : ?>
+		<?php if ( ! comments_open() ) : ?>
 	<p class="no-comments"><?php _e( 'Comments are closed.', 'twentyfourteen' ); ?></p>
 	<?php endif; ?>
 

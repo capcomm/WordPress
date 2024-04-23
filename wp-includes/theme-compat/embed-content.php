@@ -27,7 +27,7 @@
 		 *
 		 * @since 4.9.0
 		 *
-		 * @param int $thumbnail_id Attachment ID.
+		 * @param int|false $thumbnail_id Attachment ID, or false if there is none.
 		 */
 		$thumbnail_id = apply_filters( 'embed_thumbnail_id', $thumbnail_id );
 
@@ -76,7 +76,7 @@
 		}
 
 		if ( $thumbnail_id && 'rectangular' === $shape ) :
-		?>
+			?>
 			<div class="wp-embed-featured-image rectangular">
 				<a href="<?php the_permalink(); ?>" target="_top">
 					<?php echo wp_get_attachment_image( $thumbnail_id, $image_size ); ?>
